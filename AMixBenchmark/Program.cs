@@ -568,19 +568,21 @@ namespace AMixBenchmark
 
     public class BenchArray
     {
-        int n = 10000;
+        [Params(50, 100, 10000)]
+        public int n;
         double[] ai;
         double[,] kijm;
         double[,] Aij;
 
-        public BenchArray()
+        [GlobalSetup]
+        public void Setup()
         {
             ai = ArrayMaker.MakeRandomOneDimensionalArray(n);
             kijm = ArrayMaker.MakeRandomTwoDimensionalArray(n);
             Aij = new double[n, n];
         }
 
-        [Benchmark]
+        [Benchmark(Baseline = true)]
         public void DoAllItemsDiagonalSpecialCase()
         {
             for (int i = 0; i < n; i++)
@@ -727,7 +729,7 @@ namespace AMixBenchmark
     {
         static void Main(string[] args)
         {
-            var summary = BenchmarkRunner.Run<Bench>();
+            var summary = BenchmarkRunner.Run<BenchArray>();
         }
     }
 }
